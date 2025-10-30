@@ -1,30 +1,35 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import type { Task } from "./TaskList";
+import { Box, Paper, Typography, List, ListItem, ListItemText, Alert } from "@mui/material";
 
 export default function CompletedTasks() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [error, setError] = useState<string>("");
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [error, setError] = useState<string>("");
 
-  useEffect(() => {
-    api.get("/tasks")
-      .then(res => setTasks(res.data.filter((t: Task) => t.completed === 1)))
-      .catch(() => setError("Failed to load completed tasks"));
-  }, []);
+    useEffect(() => {
+        api.get("/tasks")
+            .then(res => setTasks(res.data.filter((t: Task) => t.completed === 1)))
+            .catch(() => setError("Failed to load completed tasks"));
+    }, []);
 
-  return (
-    <div>
-      <h2>Completed Tasks</h2>
-      {error && <div style={{color:"red"}}>{error}</div>}
-      <ul>
-        {tasks.length === 0 && <li>No completed tasks!</li>}
-        {tasks.map(task =>
-          <li key={task.id}>
-            {task.task_name} | {task.date} {task.time}
-            {/* Could add details/notes/priority here */}
-          </li>
-        )}
-      </ul>
-    </div>
-  );
+    return (
+        <Box maxWidth={600} mx="auto" mt={5}>
+            <Paper elevation={3} sx={{ p: 4 }}>
+                <Typography variant="h5" mb={2}>Completed Tasks</Typography>
+                {error && <Alert severity="error">{error}</Alert>}
+                <List>
+                    {tasks.length === 0 && <ListItem><ListItemText primary="No completed tasks!" /></ListItem>}
+                    {tasks.map(task =>
+                        <ListItem key={task.id} divider>
+                            <ListItemText
+                                primary={task.task_name}
+                                secondary={`${task.date} ${task.time}`}
+                            />
+                        </ListItem>
+                    )}
+                </List>
+            </Paper>
+        </Box>
+    );
 }
