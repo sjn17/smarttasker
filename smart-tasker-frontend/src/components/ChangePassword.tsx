@@ -30,40 +30,109 @@ export default function ChangePassword() {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="70vh">
-            <Paper elevation={4} sx={{ p: 4, minWidth: 330 }}>
-                <Typography variant="h5" mb={2}>Change Password</Typography>
-                <form onSubmit={handleSubmit}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            minHeight="100vh"
+            bgcolor="background.default"
+            py={4}
+            px={2}
+        >
+            <Paper 
+                elevation={3} 
+                sx={{ 
+                    p: { xs: 3, sm: 4 },
+                    width: '100%', 
+                    maxWidth: 400,
+                    borderRadius: 2,
+                    boxSizing: 'border-box',
+                    mt: 2
+                }}
+            >
+                <Typography variant="h5" component="h1" align="center" fontWeight="bold" mb={1}>
+                    Change Password
+                </Typography>
+                <Typography variant="body2" color="text.secondary" align="center" mb={3}>
+                    Create a new secure password for your account
+                </Typography>
+                
+                <Box component="form" onSubmit={handleSubmit} noValidate>
                     <TextField
                         type="password"
-                        label="Old password"
+                        label="Current Password"
                         value={oldpw}
                         onChange={e => setOldpw(e.target.value)}
                         fullWidth
                         margin="normal"
                         required
+                        variant="outlined"
+                        size="small"
+                        autoComplete="current-password"
                     />
                     <TextField
                         type="password"
-                        label="New password"
+                        label="New Password"
                         value={newpw}
                         onChange={e => setNewpw(e.target.value)}
                         fullWidth
                         margin="normal"
                         required
+                        variant="outlined"
+                        size="small"
+                        autoComplete="new-password"
                     />
                     <Button
                         type="submit"
                         variant="contained"
+                        color="primary"
                         fullWidth
-                        sx={{ mt: 2 }}
+                        size="large"
                         disabled={loading}
+                        sx={{ 
+                            mt: 3,
+                            mb: 2,
+                            py: 1.5,
+                            textTransform: 'none',
+                            fontWeight: 'bold',
+                            fontSize: '1rem'
+                        }}
                     >
-                        {loading ? "Updating..." : "Change Password"}
+                        {loading ? "Updating..." : "Update Password"}
                     </Button>
-                </form>
-                {msg && <Alert severity="success" sx={{ mt: 2 }}>{msg}</Alert>}
-                {err && <Alert severity="error" sx={{ mt: 2 }}>{err}</Alert>}
+                    
+                    {(msg || err) && (
+                        <Box sx={{ mt: 2 }}>
+                            {msg && (
+                                <Alert 
+                                    severity="success" 
+                                    sx={{ 
+                                        mb: 2,
+                                        '& .MuiAlert-message': {
+                                            width: '100%',
+                                            textAlign: 'center'
+                                        }
+                                    }}
+                                >
+                                    {msg}
+                                </Alert>
+                            )}
+                            {err && (
+                                <Alert 
+                                    severity="error"
+                                    sx={{ 
+                                        '& .MuiAlert-message': {
+                                            width: '100%',
+                                            textAlign: 'center'
+                                        }
+                                    }}
+                                >
+                                    {err}
+                                </Alert>
+                            )}
+                        </Box>
+                    )}
+                </Box>
             </Paper>
         </Box>
     );

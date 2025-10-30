@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
-import TaskForm from "./TaskForm";
-import TextField from '@mui/material/TextField';
-import EditIcon from '@mui/icons-material/Edit';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';   // <--- CRITICAL!
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import { 
+    Box, Typography, Alert, Stack, Card, CardContent, 
+    Button, IconButton, TextField, Container
+} from "@mui/material";
+import { 
+    Edit as EditIcon, 
+    CheckCircle as CheckCircleIcon, 
+    Delete as DeleteIcon,
+    Add as AddIcon
+} from "@mui/icons-material";
 
 export interface Task {
     id: number;
@@ -32,7 +30,6 @@ export default function TaskList() {
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editForm, setEditForm] = useState<Partial<Task>>({});
 
-
     const loadTasks = () => {
         api.get("/tasks")
             .then(res => setTasks(res.data.filter((t: Task) => !t.completed)))
@@ -50,13 +47,24 @@ export default function TaskList() {
         }
     };
 
+    const navigate = useNavigate();
 
     return (
-        <Box maxWidth={900} mx="auto" mt={3}>
-            <Typography variant="h5" mb={2}>Your Tasks</Typography>
-            <TaskForm onTaskAdded={loadTasks} />
-            {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
-            <Stack spacing={2} mt={3}>
+        <Container maxWidth="md" sx={{ py: 3 }}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                <Typography variant="h4" component="h1">Your Tasks</Typography>
+                <Button 
+                    variant="contained" 
+                    startIcon={<AddIcon />}
+                    onClick={() => navigate('/tasks/add')}
+                >
+                    New Task
+                </Button>
+            </Box>
+            
+            {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+            
+            <Stack spacing={2}>
                 {tasks.map(task =>
                     <Card key={task.id} elevation={2}>
                         <CardContent>
@@ -113,6 +121,6 @@ export default function TaskList() {
                     </Card>
                 )}
             </Stack>
-        </Box>
+        </Container>
     );
 }

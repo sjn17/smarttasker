@@ -26,17 +26,44 @@ export default function ForgotPassword() {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
-            <Paper elevation={4} sx={{ p: 4, width: 340 }}>
-                <Typography variant="h5" gutterBottom>Forgot Password</Typography>
-                <form onSubmit={handleSubmit}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            minHeight="100vh"
+            bgcolor="background.default"
+            py={4}
+            px={2}
+        >
+            <Paper 
+                elevation={3} 
+                sx={{ 
+                    p: { xs: 3, sm: 4 },
+                    width: '100%', 
+                    maxWidth: 400,
+                    borderRadius: 2,
+                    boxSizing: 'border-box',
+                    mt: 2
+                }}
+            >
+                <Typography variant="h5" component="h1" align="center" fontWeight="bold" mb={1}>
+                    Forgot Password
+                </Typography>
+                <Typography variant="body2" color="text.secondary" align="center" mb={3}>
+                    Enter your username and email to receive a password reset link
+                </Typography>
+                
+                <Box component="form" onSubmit={handleSubmit} noValidate>
                     <TextField
                         label="Username"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                         fullWidth
+                        autoFocus
                         margin="normal"
                         required
+                        variant="outlined"
+                        size="small"
                     />
                     <TextField
                         label="Email"
@@ -46,13 +73,60 @@ export default function ForgotPassword() {
                         fullWidth
                         margin="normal"
                         required
+                        variant="outlined"
+                        size="small"
                     />
-                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }} disabled={loading}>
-                        {loading ? "Processing..." : "Send reset mail"}
+                    <Button 
+                        type="submit" 
+                        variant="contained" 
+                        color="primary" 
+                        fullWidth 
+                        size="large"
+                        disabled={loading}
+                        sx={{ 
+                            mt: 3,
+                            mb: 2,
+                            py: 1.5,
+                            textTransform: 'none',
+                            fontWeight: 'bold',
+                            fontSize: '1rem'
+                        }}
+                    >
+                        {loading ? "Sending..." : "Send Reset Link"}
                     </Button>
-                </form>
-                {message && <Alert severity="success" sx={{ mt: 2 }}>{message}</Alert>}
-                {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+                    
+                    {(message || error) && (
+                        <Box sx={{ mt: 2 }}>
+                            {message && (
+                                <Alert 
+                                    severity="success" 
+                                    sx={{ 
+                                        mb: 2,
+                                        '& .MuiAlert-message': {
+                                            width: '100%',
+                                            textAlign: 'center'
+                                        }
+                                    }}
+                                >
+                                    {message}
+                                </Alert>
+                            )}
+                            {error && (
+                                <Alert 
+                                    severity="error"
+                                    sx={{ 
+                                        '& .MuiAlert-message': {
+                                            width: '100%',
+                                            textAlign: 'center'
+                                        }
+                                    }}
+                                >
+                                    {error}
+                                </Alert>
+                            )}
+                        </Box>
+                    )}
+                </Box>
             </Paper>
         </Box>
     );
