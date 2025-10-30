@@ -1,2 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+app.cpython-*
+
+# Node.js/React
+node_modules/
+dist/
+build/
+*.log
+
+# VSCode/project/OS
+.env
+.vscode/
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# Test/coverage
+.coverage
+coverage/
+.pytest_cache/
+.mypy_cache/
+package-lock.json
+ yarn.lock
+
 .venv
 *.venv
